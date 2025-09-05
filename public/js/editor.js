@@ -36,6 +36,8 @@ const uploadImage = (uploadInput, uploadType) => {
                     banner.style.backgroundImage = `url(${bannerPath})`;
                 }
             });
+    } else {
+        alert("Please select a valid image file.");
     }
 };
 
@@ -44,3 +46,30 @@ const addImage = (imagePath, alt) => {
     let textToInsert = `\r![${alt}](${imagePath})\r`;
     articleFeild.value = articleFeild.value.slice(0, curPos) + textToInsert + articleFeild.value.slice(curPos);
 }
+
+let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+publishBtn.addEventListener('click', () => {
+    if (articleFeild.value.length && blogTitleField.value.length) {
+        let letters = 'abcdefghijklmnopqrstuvwxyz';
+        let blogId = blogTitleField.value.split(' ').join('-');
+        let id = '';
+        for (let i = 0; i < 4; i++) {
+            id += letters[Math.floor(Math.random() * letters.length)];
+        }
+        let docName = `${blogId}-${id}`;
+
+        let data = new Date();
+        
+        db.collection('blogs').doc(docName).set({
+            title: blogTitleField.value,
+            article: articleFeild.value,
+            bannerImage: bannerPath,
+            publishedAt: `${data.getDate()} ${months[data.getMonth()]} ${data.getFullYear()}`
+            // You can add more fields as needed
+            // e.g., author: "Author Name"
+        }).then(() => {
+            console.log('date entered')
+        });
+    }
+});
