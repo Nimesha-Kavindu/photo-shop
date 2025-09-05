@@ -1,3 +1,7 @@
+
+import { db } from './firebase.js';
+import { collection, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
 const blogTitleField = document.querySelector('.title');
 const articleFeild = document.querySelector('.article');
 
@@ -61,15 +65,19 @@ publishBtn.addEventListener('click', () => {
 
         let data = new Date();
         
-        db.collection('blogs').doc(docName).set({
+        setDoc(doc(collection(db, "blogs"), docName), {
             title: blogTitleField.value,
             article: articleFeild.value,
             bannerImage: bannerPath,
             publishedAt: `${data.getDate()} ${months[data.getMonth()]} ${data.getFullYear()}`
             // You can add more fields as needed
             // e.g., author: "Author Name"
-        }).then(() => {
-            console.log('date entered')
+        })
+        .then(() => {
+            console.log('date entered');
+        })
+        .catch((error) => {
+            console.error("Error writing document: ", error);
         });
     }
 });

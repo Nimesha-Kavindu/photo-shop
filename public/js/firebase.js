@@ -20,4 +20,7 @@ const analytics = getAnalytics(app);
 // Optionally export app and analytics if you want to use them in other modules
 export { app, analytics };
 
-let db = firebase.firestore();
+// Import Firestore and initialize it using the modular SDK
+import { getFirestore } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+const db = getFirestore(app);
+export { db };
