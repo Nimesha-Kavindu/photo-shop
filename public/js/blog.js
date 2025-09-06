@@ -1,7 +1,29 @@
 import { db } from './firebase.js';
-import { doc, getDoc, collection } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import { doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 let blogId = decodeURI(location.pathname.split("/").pop());
+
+// Show rest of blog posts in blogs-section
+const blogsSection = document.querySelector('.blogs-section');
+getDocs(collection(db, "blogs")).then((blogsSnapshot) => {
+    blogsSnapshot.forEach(blog => {
+        if(blog.id !== blogId) {
+            createBlogCard(blog);
+        }
+    });
+});
+
+function createBlogCard(blog) {
+    const data = blog.data();
+    blogsSection.innerHTML += `
+        <div class="blog-card">
+            <img src="${data.bannerImage}" class="blog-image" alt="">
+            <h1 class="blog-title">${data.title.substring(0, 100) + '...'}</h1>
+            <p class="blog-overview">${data.article.substring(0, 200) + '...'}</p>
+            <a href="/${blog.id}" class="btn dark">read</a>
+        </div>
+    `;
+}
 
 // Fetch the blog document using modular Firestore syntax
 getDoc(doc(collection(db, "blogs"), blogId)).then((docSnap) => {
