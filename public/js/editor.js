@@ -74,7 +74,7 @@ publishBtn.addEventListener('click', () => {
             // e.g., author: "Author Name"
         })
         .then(() => {
-            console.log('date entered');
+            location.href = `/${docName}`;
         })
         .catch((error) => {
             console.error("Error writing document: ", error);

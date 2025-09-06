@@ -35,6 +35,14 @@ app.post('/upload', (req, res) => {
     })
 });
 
+app.get('/:blog', (req, res) => {
+  res.sendFile(path.join(initial_path, 'blog.html'));
+});
+
+app.use((req,res)=>{
+  res.status(404).sendFile(path.join(initial_path, '404.html'));
+});
+
 app.listen(3000, () => {
   console.log('Server is running on http://localhost:3000');
 });
